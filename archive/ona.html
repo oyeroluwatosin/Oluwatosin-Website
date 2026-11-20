@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oluwatosin Oyero — UX Designer · ỌNÀ</title>
+<meta name="description" content="Oluwatosin Oyero — UX designer helping brands turn complex products into clear, human experiences.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Archivo+Expanded:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#1C1D20;          /* charcoal canvas */
+    --bg-soft:#26272B;
+    --ink:#FFFFFF;
+    --muted:#999A9E;
+    --line:#38393D;
+    --accent:#E5622B;      /* clay orange — ỌNÀ's earth kept alive in the dark */
+    --blue:#455CE9;
+    --light:#F2F0EC;       /* light sections */
+    --light-ink:#1C1D20;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Archivo',system-ui,sans-serif;line-height:1.6;font-size:16px;overflow-x:hidden;cursor:none}
+  a,button{cursor:none}
+  ::selection{background:var(--accent);color:#fff}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+  @media(max-width:700px){.wrap{padding:0 22px} body{cursor:auto} a,button{cursor:pointer} .cursor,.cursor-dot{display:none}}
+
+  /* Custom cursor */
+  .cursor{position:fixed;top:0;left:0;width:64px;height:64px;border:1px solid rgba(255,255,255,.35);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s,border .3s;mix-blend-mode:difference}
+  .cursor.hovering{width:110px;height:110px;background:var(--accent);border-color:transparent;mix-blend-mode:normal;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;letter-spacing:.05em}
+  .cursor-dot{position:fixed;top:0;left:0;width:6px;height:6px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference}
+
+  /* Nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:background .4s}
+  nav.scrolled{background:rgba(28,29,32,.85);backdrop-filter:blur(10px)}
+  .nav-inner{display:flex;justify-content:space-between;align-items:center;height:84px}
+  .logo{font-weight:600;font-size:1rem;letter-spacing:.02em}
+  .logo .copy{color:var(--muted);font-weight:400;margin-right:6px}
+  .logo em{font-style:normal;color:var(--accent)}
+  .nav-links{display:flex;gap:36px;font-size:.95rem}
+  .nav-links a{position:relative;color:var(--ink)}
+  .nav-links a::after{content:"";position:absolute;left:50%;bottom:-8px;width:5px;height:5px;border-radius:50%;background:var(--ink);transform:translateX(-50%) scale(0);transition:.25s}
+  .nav-links a:hover::after{transform:translateX(-50%) scale(1)}
+  @media(max-width:700px){.nav-links{gap:20px;font-size:.85rem}}
+
+  /* Hero */
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;position:relative;padding-bottom:0}
+  .hero-meta{position:absolute;top:50%;transform:translateY(-50%);display:flex;width:100%;justify-content:space-between;align-items:center}
+  .hero-role{display:flex;align-items:center;gap:16px;font-size:1.05rem;color:var(--ink)}
+  .hero-role .arrow{font-size:1.6rem}
+  .hero-role .stack{line-height:1.45}
+  .hero-loc{display:flex;align-items:center;background:var(--bg-soft);border:1px solid var(--line);border-radius:999px;overflow:hidden;font-size:.9rem}
+  .hero-loc .globe{background:var(--blue);align-self:stretch;display:flex;align-items:center;padding:14px 18px;font-size:1.1rem}
+  .hero-loc .txt{padding:14px 22px;color:var(--muted)}
+  @media(max-width:900px){.hero-meta{flex-direction:column;align-items:flex-start;gap:22px;position:static;transform:none;margin-top:150px}}
+
+  /* Marquee */
+  .marquee{white-space:nowrap;overflow:hidden;padding:30px 0 40px}
+  .marquee-track{display:inline-block;animation:scroll 18s linear infinite}
+  .marquee span{font-family:'Archivo Expanded','Archivo',sans-serif;font-size:clamp(4.2rem,12.5vw,11rem);font-weight:500;letter-spacing:-.02em;padding-right:.6em}
+  .marquee .dash{color:var(--accent)}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* Section label */
+  .sec-label{font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:60px;display:flex;align-items:center;gap:14px}
+  .sec-label::after{content:"";flex:1;height:1px;background:var(--line)}
+  section{padding:130px 0}
+
+  /* Intro statement */
+  .statement h2{font-size:clamp(1.7rem,3.6vw,2.9rem);font-weight:500;line-height:1.35;max-width:26ch;letter-spacing:-.01em}
+  .statement h2 .dim{color:var(--muted)}
+  .statement-grid{display:grid;grid-template-columns:1.4fr .6fr;gap:70px;align-items:start}
+  .statement .aside{color:var(--muted);font-size:1rem;max-width:34ch}
+  .statement .aside strong{color:var(--ink);display:block;margin-bottom:10px;font-weight:500}
+  @media(max-width:900px){.statement-grid{grid-template-columns:1fr;gap:40px}}
+
+  /* Work list */
+  .work-item{display:block;border-top:1px solid var(--line);padding:56px 0;position:relative;transition:opacity .3s}
+  .work-item:last-of-type{border-bottom:1px solid var(--line)}
+  .work-list:hover .work-item{opacity:.35}
+  .work-list .work-item:hover{opacity:1}
+  .wi-row{display:flex;justify-content:space-between;align-items:baseline;gap:30px}
+  .wi-title{font-family:'Archivo Expanded','Archivo',sans-serif;font-size:clamp(1.9rem,4.6vw,3.8rem);font-weight:500;letter-spacing:-.02em;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  .work-item:hover .wi-title{transform:translateX(18px);color:var(--accent)}
+  .wi-cat{color:var(--muted);font-size:.95rem;white-space:nowrap;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  .work-item:hover .wi-cat{transform:translateX(-14px)}
+  .wi-detail{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.2,.8,.2,1)}
+  .work-item:hover .wi-detail,.work-item:focus-within .wi-detail{max-height:280px}
+  .wi-detail-inner{padding-top:24px;display:flex;gap:40px;flex-wrap:wrap;justify-content:space-between}
+  .wi-detail p{color:var(--muted);max-width:56ch;font-size:.98rem}
+  .wi-stats{display:flex;gap:26px;flex-wrap:wrap}
+  .wi-stat .n{font-family:'Archivo Expanded',sans-serif;font-size:1.4rem;color:var(--accent)}
+  .wi-stat .l{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .wi-links{display:flex;gap:22px;align-items:center}
+  .wi-links a{font-size:.9rem;font-weight:500;border-bottom:1px solid var(--line);padding-bottom:3px;transition:.25s}
+  .wi-links a:hover{border-color:var(--accent);color:var(--accent)}
+  .wi-num{position:absolute;top:58px;left:-52px;font-size:.85rem;color:var(--muted)}
+  @media(max-width:1300px){.wi-num{position:static;display:block;margin-bottom:8px}}
+  @media(max-width:700px){.wi-row{flex-direction:column;gap:8px}.work-item:hover .wi-title{transform:none}}
+
+  /* Light band: about + skills */
+  .light-band{background:var(--light);color:var(--light-ink);border-radius:40px 40px 0 0}
+  .light-band .sec-label{color:#8A867E}
+  .light-band .sec-label::after{background:#DAD5CC}
+  .about-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:70px}
+  .about-grid p{margin-bottom:20px;color:#5B584F;font-size:1.08rem}
+  .about-grid p strong{color:var(--light-ink);font-weight:600}
+  .about-grid .big{font-size:clamp(1.5rem,2.8vw,2.2rem);line-height:1.4;color:var(--light-ink);font-weight:500;letter-spacing:-.01em}
+  .facts{display:flex;flex-direction:column}
+  .fact{border-top:1px solid #DAD5CC;padding:20px 0}
+  .fact .k{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:#8A867E}
+  .fact .v{font-size:1.3rem;font-weight:500;margin-top:4px}
+  @media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:44px}}
+
+  .skill-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid #DAD5CC}
+  .skill-col{padding:40px 34px;border-right:1px solid #DAD5CC}
+  .skill-col:last-child{border-right:none}
+  .skill-col .idx{font-size:.85rem;color:var(--accent);margin-bottom:16px;display:block}
+  .skill-col h3{font-size:1.35rem;font-weight:600;margin-bottom:18px}
+  .skill-col li{list-style:none;color:#5B584F;padding:7px 0;border-bottom:1px dashed #DAD5CC;font-size:.96rem}
+  .skill-col li:last-child{border:none}
+  @media(max-width:900px){.skill-cols{grid-template-columns:1fr}.skill-col{border-right:none;border-bottom:1px solid #DAD5CC;padding:34px 0}}
+
+  /* Testimonials — horizontal snap */
+  .quotes-rail{display:flex;gap:26px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:20px;scrollbar-width:none}
+  .quotes-rail::-webkit-scrollbar{display:none}
+  .quote{min-width:min(460px,86vw);scroll-snap-align:start;background:var(--bg-soft);border:1px solid var(--line);border-radius:20px;padding:40px;display:flex;flex-direction:column;gap:24px}
+  .quote p{font-size:1.08rem;line-height:1.65;color:#D6D6D8}
+  .quote .mark{color:var(--accent);font-family:'Archivo Expanded',sans-serif;font-size:2.4rem;line-height:.5}
+  .quote .who{margin-top:auto;font-size:.9rem;color:var(--muted)}
+  .quote .who strong{display:block;color:var(--ink);font-size:1rem;font-weight:600}
+  .rail-hint{color:var(--muted);font-size:.85rem;margin-top:10px}
+
+  /* Contact */
+  .contact{padding:150px 0 60px;position:relative}
+  .contact h2{font-family:'Archivo Expanded','Archivo',sans-serif;font-size:clamp(2.6rem,7.5vw,6rem);font-weight:500;letter-spacing:-.02em;line-height:1.05;max-width:14ch}
+  .contact .avail{display:inline-flex;align-items:center;gap:10px;margin-bottom:34px;font-size:.9rem;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:10px 20px}
+  .contact .avail .pulse{width:9px;height:9px;border-radius:50%;background:#3CCF6E;animation:pulse 1.8s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(60,207,110,.5)}70%{box-shadow:0 0 0 10px rgba(60,207,110,0)}100%{box-shadow:0 0 0 0 rgba(60,207,110,0)}}
+  .contact-row{display:flex;gap:18px;margin-top:50px;flex-wrap:wrap}
+  .pill{display:inline-flex;align-items:center;gap:10px;padding:20px 36px;border-radius:999px;font-size:1rem;font-weight:500;border:1px solid var(--line);transition:.3s;position:relative;overflow:hidden}
+  .pill span{position:relative;z-index:1}
+  .pill::before{content:"";position:absolute;inset:0;background:var(--accent);border-radius:999px;transform:translateY(101%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  .pill:hover::before{transform:translateY(0)}
+  .pill:hover{border-color:var(--accent)}
+  .pill.solid{background:var(--blue);border-color:var(--blue)}
+
+  footer{border-top:1px solid var(--line);margin-top:110px;padding:34px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;font-size:.85rem;color:var(--muted)}
+  footer .socials{display:flex;gap:26px}
+  footer a{color:var(--ink);transition:.2s}
+  footer a:hover{color:var(--accent)}
+  footer .time .k{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase}
+
+  /* Reveal animation */
+  .reveal{opacity:0;transform:translateY(46px);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+  .reveal.visible{opacity:1;transform:none}
+  /* keep side padding even when section/hero shorthand padding is applied */
+  .wrap{padding-left:40px;padding-right:40px}
+  @media(max-width:700px){.wrap{padding-left:22px;padding-right:22px}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<nav id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo" data-hover><span class="copy">©</span> Code &amp; Clarity by <em>Tosin</em></a>
+    <div class="nav-links">
+      <a href="#work" data-hover>Work</a>
+      <a href="#about" data-hover>About</a>
+      <a href="#voices" data-hover>Voices</a>
+      <a href="#contact" data-hover>Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap hero-meta">
+    <div class="hero-loc">
+      <span class="globe">🌍</span>
+      <span class="txt">Located in the ỌNÀ studio — designing paths worldwide</span>
+    </div>
+    <div class="hero-role">
+      <span class="arrow">↳</span>
+      <span class="stack">Freelance<br><strong>UX Designer &amp; Researcher</strong></span>
+    </div>
+  </div>
+  <div class="marquee">
+    <div class="marquee-track">
+      <span>Oluwatosin Oyero <span class="dash">—</span> </span><span>Oluwatosin Oyero <span class="dash">—</span> </span>
+    </div>
+  </div>
+</header>
+
+<section class="statement wrap reveal">
+  <div class="statement-grid">
+    <h2>I help brands untangle complex SaaS &amp; AI dashboards into <span class="dim">clear, high-performing human experiences.</span></h2>
+    <div class="aside">
+      <strong>The philosophy is in the name.</strong>
+      In Yoruba, <em>ọnà</em> means both the path and the craft. Every product is a path a person must walk — clearing it is the craft. I build for the user, design for the developer, and solve for the business.
+    </div>
+  </div>
+</section>
+
+<section id="work" class="wrap">
+  <div class="sec-label reveal">Selected Work — 7 projects</div>
+  <div class="work-list">
+
+    <div class="work-item reveal" data-hover="UX">
+      <span class="wi-num">01</span>
+      <div class="wi-row">
+        <span class="wi-title">DSN QA Review Platform</span>
+        <span class="wi-cat">Internal Platform · Sole Designer</span>
+      </div>
+      <div class="wi-detail"><div class="wi-detail-inner">
+        <p>Sole designer on an internal QA review management platform, owning process and stakeholder communication end to end. Designed task creation and task changes across four roles (contributor, reviewer, super reviewer, admin), an admin layer for critical actions, simpler Excel upload, and an automatic status change once all tasks are complete.</p>
+        <div class="wi-stats">
+          <div class="wi-stat"><div class="n">4</div><div class="l">User roles</div></div>
+          <div class="wi-stat"><div class="n">Solo</div><div class="l">End-to-end ownership</div></div>
+        </div>
+      </div></div>
+    </div>
+
+    <a class="work-item reveal" href="android-concept" data-hover="View">
+      <span class="wi-num">02</span>
+      <div class="wi-row">
+        <span class="wi-title">Android Concept</span>
+        <span class="wi-cat">Permissions · Offline · Notifications</span>
+      </div>
+      <div class="wi-detail"><div class="wi-detail-inner">
+        <p>A self-initiated study on how Android products ask for permission, handle denial and offline states, and decide which notifications deserve attention. Clearly labelled as a concept, not client work.</p>
+        <div class="wi-stats">
+          <div class="wi-stat"><div class="n">4</div><div class="l">Screens</div></div>
+          <div class="wi-stat"><div class="n">360dp</div><div class="l">Android frame</div></div>
+        </div>
+      </div></div>
+    </a>
+
+    <a class="work-item reveal" href="http://tacef.life" target="_blank" data-hover="View">
+      <span class="wi-num">03</span>
+      <div class="wi-row">
+        <span class="wi-title">TACEF Ecosystem</span>
+        <span class="wi-cat">SaaS Dashboard · Zero-Trust UX</span>
+      </div>
+      <div class="wi-detail"><div class="wi-detail-inner">
+        <p>A security-first convention ERP for distributed admin networks. RBAC navigation, audit-ready dashboards, payment-gated workflows and a zero-login attendee lookup.</p>
+        <div class="wi-stats">
+          <div class="wi-stat"><div class="n">99%</div><div class="l">Allocation accuracy</div></div>
+          <div class="wi-stat"><div class="n">1 mo</div><div class="l">Timeline</div></div>
+        </div>
+      </div></div>
+    </a>
+
+    <a class="work-item reveal" href="https://www.behance.net/gallery/153877161/Centralized-trading-platform" target="_blank" data-hover="View">
+      <span class="wi-num">04</span>
+      <div class="wi-row">
+        <span class="wi-title">Kryptal</span>
+        <span class="wi-cat">Web3 Exchange · Research &amp; Leadership</span>
+      </div>
+      <div class="wi-detail"><div class="wi-detail-inner">
+        <p>A secure, centralized crypto exchange — the first with sign-language tutorials and video subtitles. Led brand identity across a 5-designer team.</p>
+        <div class="wi-stats">
+          <div class="wi-stat"><div class="n">+30%</div><div class="l">Sprint acceleration</div></div>
+          <div class="wi-stat"><div class="n">5</div><div class="l">Designers led</div></div>
+        </div>
+      </div></div>
+    </a>
+
+    <a class="work-item reveal" href="https://www.behance.net/gallery/148618049/Grabby" target="_blank" data-hover="View">
+      <span class="wi-num">05</span>
+      <div class="wi-row">
+        <span class="wi-title">Grabby</span>
+        <span class="wi-cat">E-commerce App · Team Lead</span>
+      </div>
+      <div class="wi-detail"><div class="wi-detail-inner">
+        <p>A customizable shopping experience with real-time delivery tracking and guest checkout. Led research that surfaced 5 core pain points, then designed the majority of the UI.</p>
+        <div class="wi-stats">
+          <div class="wi-stat"><div class="n">8</div><div class="l">Designers led</div></div>
+          <div class="wi-stat"><div class="n">50%+</div><div class="l">UI screens designed</div></div>
+        </div>
+      </div></div>
+    </a>
+
+    <a class="work-item reveal" href="https://www.figma.com/proto/EqPQJ1iRFjbyxM9ntjyh5I/Figma-Template---Design-System?page-id=94%3A46&node-id=169%3A60&viewport=1664%2C1834%2C0.25&scaling=min-zoom&starting-point-node-id=94%3A47" target="_blank" data-hover="View">
+      <span class="wi-num">06</span>
+      <div class="wi-row">
+        <span class="wi-title">KloFood</span>
+        <span class="wi-cat">Sustainability Service · Research &amp; Lead</span>
+      </div>
+      <div class="wi-detail"><div class="wi-detail-inner">
+        <p>A web service helping Tampere students cut food waste — gamified rewards, recipe suggestions and an impact tracker, grounded in semi-structured interviews and thematic coding.</p>
+        <div class="wi-stats">
+          <div class="wi-stat"><div class="n">9</div><div class="l">User interviews</div></div>
+          <div class="wi-stat"><div class="n">3 mo</div><div class="l">Timeline</div></div>
+        </div>
+      </div></div>
+    </a>
+
+    <div class="work-item reveal" data-hover="UX">
+      <span class="wi-num">07</span>
+      <div class="wi-row">
+        <span class="wi-title">SISU Evaluation</span>
+        <span class="wi-cat">EdTech Platform · Heuristic Review</span>
+      </div>
+      <div class="wi-detail"><div class="wi-detail-inner">
+        <p>Expert evaluation of Tampere University’s student platform using Nielsen’s heuristics, Shneiderman’s Eight Golden Rules and USERFOCUS 44 — issues ranked on Nielsen’s severity scale with concrete fixes.</p>
+        <div class="wi-stats">
+          <div class="wi-stat"><div class="n">3</div><div class="l">Methodologies</div></div>
+          <div class="wi-stat"><div class="n">2 mo</div><div class="l">Timeline</div></div>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+</section>
+
+<div class="light-band" id="about">
+  <section class="wrap">
+    <div class="sec-label reveal">About — the designer behind ỌNÀ</div>
+    <div class="about-grid reveal">
+      <div>
+        <p class="big">Hi, I’m Oluwatosin — Tosin to most. A UX designer who thrives at the intersection of data and design.</p>
+        <p style="margin-top:26px">For 3+ years I’ve specialised in finding and fixing the <strong>friction points</strong> that hold users back — turning wordy interfaces into intuitive flows and low-converting websites into experiences that perform. I’ve led teams of up to eight, run research from pilot interviews to thematic coding, and shipped enterprise dashboards with zero-trust security models.</p>
+        <p>Clarity over clutter. Always.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="k">Experience</div><div class="v">3+ years in UX</div></div>
+        <div class="fact"><div class="k">Specialty</div><div class="v">SaaS &amp; AI dashboards</div></div>
+        <div class="fact"><div class="k">Leadership</div><div class="v">Teams up to 8 designers</div></div>
+        <div class="fact"><div class="k">Approach</div><div class="v">Data-driven, human-first</div></div>
+      </div>
+    </div>
+
+    <div style="height:90px"></div>
+    <div class="skill-cols reveal">
+      <div class="skill-col">
+        <span class="idx">01</span>
+        <h3>Research</h3>
+        <ul><li>User Research &amp; Interviews</li><li>Personas &amp; User Stories</li><li>Affinity Mapping</li><li>Heuristic Evaluation</li><li>Information Architecture</li></ul>
+      </div>
+      <div class="skill-col">
+        <span class="idx">02</span>
+        <h3>Design</h3>
+        <ul><li>UX &amp; UI Design</li><li>Wireframing &amp; Prototyping</li><li>User Flows &amp; Concept Maps</li><li>Design Systems</li><li>Sketching</li></ul>
+      </div>
+      <div class="skill-col">
+        <span class="idx">03</span>
+        <h3>Tools &amp; Build</h3>
+        <ul><li>Figma · Miro · Notion</li><li>Photoshop · Canva</li><li>HTML / CSS / Bootstrap</li><li>WordPress Development</li><li>Google &amp; Microsoft Suite</li></ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section id="voices" class="wrap">
+  <div class="sec-label reveal">Voices — unedited words from teammates</div>
+  <div class="quotes-rail reveal">
+    <div class="quote">
+      <span class="mark">“</span>
+      <p>Tosin is part of the only reasons we even have a case study, to be very honest. He approaches any obstacle with an open mind and he is an awesome team player. Anyone that has Tosin on their team is having a very vital asset.</p>
+      <div class="who"><strong>Onyinye Chiatula</strong>Team Member, Grabby Project</div>
+    </div>
+    <div class="quote">
+      <span class="mark">“</span>
+      <p>When I think of Oluwatosin, the slogan ‘Strive for Excellence’ comes to me. His ability to motivate everyone on the project and his desire to keep going while others gave up always left me in admiration.</p>
+      <div class="who"><strong>Rita Ehichioya</strong>Team Member, Grabby Project</div>
+    </div>
+    <div class="quote">
+      <span class="mark">“</span>
+      <p>Tosin’s team spirit, open communication, and ability to see the bigger picture and apply it to design really paid off. I highly recommend him for any high-quality-oriented design project.</p>
+      <div class="who"><strong>Fareed Agbaje</strong>Project Member, Tampere University</div>
+    </div>
+    <div class="quote">
+      <span class="mark">“</span>
+      <p>No matter how complex the challenge, he remains tenacious and determined to see it through to completion. His perseverance and dedication are truly inspiring.</p>
+      <div class="who"><strong>Gbemileke Onilude</strong>Colleague, Data Scientists Network</div>
+    </div>
+  </div>
+  <div class="rail-hint">← drag / scroll →</div>
+</section>
+
+<section class="contact wrap" id="contact">
+  <div class="avail reveal"><span class="pulse"></span> Available for new projects</div>
+  <h2 class="reveal">Let’s build<br>your <em style="color:var(--accent);font-style:normal">clear path</em></h2>
+  <div class="contact-row reveal">
+    <a class="pill solid" href="mailto:oyerooluwatosin.ayo@gmail.com" data-hover><span>oyerooluwatosin.ayo@gmail.com</span></a>
+    <a class="pill" href="https://wa.me/358451722370" target="_blank" data-hover><span>WhatsApp</span></a>
+    <a class="pill" href="https://www.linkedin.com/in/oluwatosinoyero/" target="_blank" data-hover><span>LinkedIn</span></a>
+  </div>
+
+  <footer>
+    <div class="time">
+      <span class="k">Version</span>
+      © 2026 ỌNÀ · Oluwatosin Oyero
+    </div>
+    <div class="time">
+      <span class="k">Local time</span>
+      <span id="clock">--:--</span>
+    </div>
+    <div class="socials">
+      <a href="/" data-hover>Main portfolio</a>
+      <a href="https://www.linkedin.com/in/oluwatosinoyero/" target="_blank" data-hover>LinkedIn</a>
+      <a href="https://www.behance.net/oyerooluwatosin1" target="_blank" data-hover>Behance</a>
+      <a href="https://github.com/oyeroluwatosin" target="_blank" data-hover>GitHub</a>
+    </div>
+  </footer>
+</section>
+
+<script>
+  // Custom cursor
+  const cursor=document.getElementById('cursor'),dot=document.getElementById('cursorDot');
+  let cx=0,cy=0,tx=0,ty=0;
+  window.addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY;dot.style.left=tx+'px';dot.style.top=ty+'px';});
+  (function follow(){cx+=(tx-cx)*.14;cy+=(ty-cy)*.14;cursor.style.left=cx+'px';cursor.style.top=cy+'px';requestAnimationFrame(follow);})();
+  document.querySelectorAll('[data-hover]').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cursor.classList.add('hovering');cursor.textContent=el.dataset.hover||'';});
+    el.addEventListener('mouseleave',()=>{cursor.classList.remove('hovering');cursor.textContent='';});
+  });
+
+  // Nav background on scroll
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40));
+
+  // Reveal on scroll
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target);}});
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Local time
+  function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});}
+  tick();setInterval(tick,30000);
+</script>
+</body>
+</html>

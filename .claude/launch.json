@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "site", "runtimeExecutable": "node", "runtimeArgs": ["C:/Users/Omistaja/AppData/Local/Temp/claude/C--Users-Omistaja-Downloads-portfolio-site/a9005654-93a6-48f2-ba3b-529e85611706/scratchpad/serve.js", "portfolio-site"], "port": 5174 }
+  ]
+}

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Friction Lab · Oluwatosin Oyero</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An interactive lab by Oluwatosin Oyero: find the friction in an Android flow, break the device's state, and see one screen through four user roles.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,480;1,9..144,340;1,9..144,420&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ---------- lab hero ---------- */
+  .lab-hero {
+    border-bottom: 1px solid var(--rule);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: -1px -1px;
+  }
+  .lab-hero .wrap { padding-top: 64px; padding-bottom: 56px; }
+  .lab-hero h1 {
+    font-size: clamp(2.1rem, 6vw, 3.6rem);
+    line-height: 1.05;
+    font-weight: 340;
+    margin: 14px 0 18px;
+    max-width: 16ch;
+  }
+  .lab-hero h1 em { color: var(--accent); font-style: italic; }
+  .lab-hero .lede { color: var(--ink-soft); max-width: 58ch; margin: 0; font-size: 1.05rem; }
+  .lab-hero .note {
+    display: inline-block; margin-top: 22px; padding: 6px 10px;
+    font-family: "IBM Plex Mono", monospace; font-size: 0.74rem;
+    background: var(--surface); border: 1px solid var(--rule); color: var(--ink-soft);
+  }
+
+  /* ---------- mode tabs ---------- */
+  .tabs {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--rule); background: var(--surface);
+    margin: 40px 0 0;
+  }
+  .tab {
+    appearance: none; border: 0; background: transparent; color: var(--ink-soft);
+    font: inherit; text-align: left; padding: 14px 16px; cursor: pointer;
+    border-right: 1px solid var(--rule); position: relative;
+  }
+  .tab:last-child { border-right: 0; }
+  .tab .n { display: block; font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; letter-spacing: 0.12em; color: var(--ink-faint); }
+  .tab .t { display: block; font-weight: 600; color: var(--ink); margin-top: 2px; }
+  .tab[aria-selected="true"] { background: var(--ink); }
+  .tab[aria-selected="true"] .t { color: var(--bg); }
+  .tab[aria-selected="true"] .n { color: var(--accent); }
+  .tab:focus-visible { outline: 2px solid var(--focus); outline-offset: -4px; }
+
+  /* ---------- stage: phone + panel ---------- */
+  .stage {
+    display: grid; grid-template-columns: 320px 1fr; gap: 40px;
+    padding: 36px 0 64px; align-items: start;
+  }
+  .panel h2 {
+    font-family: "Fraunces", serif; font-weight: 400; font-size: 1.7rem;
+    line-height: 1.15; margin: 6px 0 10px; text-wrap: balance;
+  }
+  .panel > p { color: var(--ink-soft); margin: 0 0 18px; max-width: 56ch; }
+
+  .phone {
+    width: 300px; margin: 0 auto; background: #0E1316; border-radius: 34px;
+    padding: 10px; box-shadow: 0 18px 40px -18px rgba(16,24,32,0.45);
+    position: sticky; top: 84px;
+  }
+  .screen {
+    --p-bg: #F7F8F8; --p-surface: #FFFFFF; --p-ink: #14191C; --p-soft: #59646A;
+    --p-line: #E1E5E7; --p-accent: #1B6E63; --p-accent-soft: #D7ECE8;
+    --p-warn-bg: #FCEFD8; --p-warn: #7A5410; --p-err-bg: #F9DEDC; --p-err: #8C1D18;
+    background: var(--p-bg); color: var(--p-ink); border-radius: 26px; overflow: hidden;
+    height: 600px; display: flex; flex-direction: column; font-size: 13.5px; line-height: 1.4;
+    position: relative;
+  }
+  .sb { display: flex; justify-content: space-between; padding: 10px 20px 4px; font-size: 11px; font-weight: 600; color: var(--p-soft); }
+  .sb .icons { display: flex; gap: 6px; align-items: center; }
+  .sb .icons span { display: inline-flex; }
+  .appbar { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px 10px; }
+  .appbar h3 { margin: 0; font-size: 18px; font-weight: 600; }
+  .body { flex: 1; padding: 4px 14px 14px; display: flex; flex-direction: column; gap: 10px; overflow: auto; }
+  .gesture { height: 18px; display: flex; justify-content: center; align-items: center; }
+  .gesture i { width: 92px; height: 4px; border-radius: 4px; background: #9AA4A9; }
+
+  .p-card { background: var(--p-surface); border: 1px solid var(--p-line); border-radius: 14px; padding: 12px; }
+  .p-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .p-sub { color: var(--p-soft); font-size: 12px; }
+  .p-btn {
+    display: block; width: 100%; text-align: center; border-radius: 20px; padding: 10px 12px;
+    font: inherit; font-weight: 600; border: 0; cursor: pointer;
+  }
+  .p-btn.fill { background: var(--p-accent); color: #fff; }
+  .p-btn.tonal { background: var(--p-accent-soft); color: #0F4A42; }
+  .p-btn.text { background: transparent; color: var(--p-accent); }
+  .p-btn.danger { background: var(--p-err); color: #fff; }
+  .p-btn.grey { background: #E3E6E8; color: #A3ABB0; }
+  .p-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+  .chip { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
+  .chip.ok { background: var(--p-accent-soft); color: #0F4A42; }
+  .chip.pend { background: var(--p-warn-bg); color: var(--p-warn); }
+  .chip.err { background: var(--p-err-bg); color: var(--p-err); }
+  .chip.mute { background: #ECEFF0; color: var(--p-soft); }
+  .banner { display: flex; gap: 8px; padding: 10px 12px; border-radius: 12px; font-size: 12.5px; }
+  .banner.warn { background: var(--p-warn-bg); color: var(--p-warn); }
+  .banner.err { background: var(--p-err-bg); color: var(--p-err); }
+  .banner.info { background: var(--p-accent-soft); color: #0F4A42; }
+  .banner b { font-weight: 600; }
+  .icon-tile {
+    width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+    background: var(--p-accent-soft); color: var(--p-accent); font-weight: 700; font-size: 18px;
+  }
+  .scrim { position: absolute; inset: 0; background: rgba(10,14,16,0.45); display: flex; align-items: center; padding: 18px; z-index: 3; }
+  .sheet { background: var(--p-surface); border-radius: 22px; padding: 18px; width: 100%; }
+  .sheet h4 { margin: 0 0 6px; font-size: 16px; }
+  .sheet p { margin: 0 0 12px; color: var(--p-soft); font-size: 12.5px; }
+  .sheet input { width: 100%; font: inherit; padding: 9px 10px; border: 1px solid var(--p-line); border-radius: 8px; margin-bottom: 10px; }
+
+  /* ---------- mode 1: hotspots ---------- */
+  .hs {
+    appearance: none; font: inherit; color: inherit; text-align: left; cursor: pointer;
+    border: 1px dashed transparent; background: transparent; padding: 0; position: relative; width: 100%;
+    border-radius: 12px;
+  }
+  .hs:hover { border-color: rgba(196,83,27,0.45); }
+  .hs:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .hs.found { border: 1.5px solid var(--accent); }
+  .hs .pin {
+    position: absolute; top: -8px; right: -6px; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--accent); color: #fff; font: 600 11px/20px "IBM Plex Mono", monospace; text-align: center;
+    display: none; z-index: 2;
+  }
+  .hs.found .pin { display: block; }
+  .bell-btn { width: auto; padding: 4px 6px; }
+  .bad-err { background: #E8E8E8; color: #333; font-family: "IBM Plex Mono", monospace; font-size: 11.5px; padding: 10px; border-radius: 4px; }
+  .bad-perm { background: #2B2F33; color: #fff; padding: 12px; border-radius: 4px; font-size: 12.5px; }
+  .bad-list .p-card { border-radius: 4px; margin-bottom: 6px; }
+  .miss {
+    position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%);
+    background: #14191C; color: #fff; font-size: 12px; padding: 6px 12px; border-radius: 14px;
+    opacity: 0; transition: opacity .2s; pointer-events: none; white-space: nowrap; z-index: 4;
+  }
+  .miss.show { opacity: 1; }
+
+  .meter { display: flex; align-items: center; gap: 12px; margin: 0 0 16px; }
+  .meter .bar { flex: 1; height: 6px; background: var(--surface-2); position: relative; overflow: hidden; }
+  .meter .bar i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--accent); transition: width .3s; }
+  .meter .count { font-family: "IBM Plex Mono", monospace; font-size: 0.85rem; }
+
+  .findings { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+  .findings li { border-bottom: 1px solid var(--rule); padding: 14px 0; display: grid; grid-template-columns: 28px 1fr; gap: 10px; }
+  .findings li.locked { color: var(--ink-faint); }
+  .findings .num { font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--accent); padding-top: 2px; }
+  .findings li.locked .num { color: var(--ink-faint); }
+  .findings h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+  .findings .heur { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; color: var(--ink-faint); margin: 3px 0 6px; letter-spacing: 0.02em; }
+  .findings .sev { color: var(--accent); }
+  .findings p { margin: 0; color: var(--ink-soft); font-size: 0.93rem; }
+  .findings .fix { margin-top: 6px; }
+  .findings .fix b { color: var(--verify); font-weight: 600; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .btn {
+    appearance: none; font: inherit; font-weight: 500; cursor: pointer; padding: 10px 16px;
+    border: 1px solid var(--ink); background: transparent; color: var(--ink);
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .btn[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+  /* ---------- mode 2: device conditions ---------- */
+  .cond { border: 1px solid var(--rule); background: var(--surface); margin: 0 0 12px; padding: 12px 14px; }
+  .cond legend { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); padding: 0 4px; }
+  .seg { display: flex; flex-wrap: wrap; gap: 6px; }
+  .seg label { position: relative; }
+  .seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .seg span { display: inline-block; padding: 7px 12px; border: 1px solid var(--rule); font-size: 0.9rem; color: var(--ink-soft); background: var(--bg); }
+  .seg input:checked + span { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .seg input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+  .why { border-left: 3px solid var(--verify); padding: 4px 0 4px 14px; margin: 18px 0; }
+  .why .k { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--verify); }
+  .why p { margin: 4px 0 0; color: var(--ink-soft); }
+  .coverage { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; margin: 8px 0 4px; }
+  .coverage i { height: 14px; background: var(--surface-2); border: 1px solid var(--rule); }
+  .coverage i.seen { background: var(--verify); border-color: var(--verify); }
+  .coverage i.now { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .cov-label { font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--ink-soft); }
+
+  /* ---------- mode 3: roles ---------- */
+  .matrix { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 18px; background: var(--surface); }
+  .matrix th, .matrix td { border: 1px solid var(--rule); padding: 8px 8px; text-align: center; }
+  .matrix th:first-child, .matrix td:first-child { text-align: left; }
+  .matrix thead th { font-family: "IBM Plex Mono", monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; }
+  .matrix .on { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .matrix thead .on { color: var(--accent); }
+  .yes { color: var(--verify); font-weight: 600; }
+  .no { color: var(--ink-faint); }
+  .crit { color: var(--accent); font-weight: 600; }
+  .log { font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; color: var(--ink-soft); background: var(--surface); border: 1px solid var(--rule); padding: 10px 12px; margin-top: 14px; min-height: 64px; }
+  .log div { margin: 2px 0; }
+  .log div::before { content: "› "; color: var(--accent); }
+  .task { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--p-line); }
+  .task:first-of-type { border-top: 0; }
+  .task input { width: 18px; height: 18px; accent-color: var(--p-accent); }
+  .task .tn { flex: 1; }
+
+  /* ---------- outro ---------- */
+  .outro { border-top: 1px solid var(--rule); padding: 48px 0 56px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 32px; align-items: end; }
+  .outro h2 { font-family: "Fraunces", serif; font-weight: 400; font-size: 1.9rem; line-height: 1.15; margin: 8px 0 10px; }
+  .outro p { color: var(--ink-soft); margin: 0; }
+  .outro .links { display: flex; flex-direction: column; gap: 8px; }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 820px) {
+    .stage { grid-template-columns: 1fr; gap: 28px; }
+    .phone { position: static; }
+    .outro { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding: 0 16px; }
+    .nav { padding: 14px 16px; }
+    .nav-links { display: none; }
+    .tabs { grid-template-columns: 1fr; }
+    .tab { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .tab:last-child { border-bottom: 0; }
+    .phone { width: 100%; max-width: 300px; }
+    .matrix { font-size: 0.78rem; }
+    .matrix th, .matrix td { padding: 6px 4px; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site">
+  <nav class="nav">
+    <a class="nav-name" href="index.html" style="color:inherit;text-decoration:none">Oluwatosin Oyero</a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="visual-work.html">Visual work</a></li>
+      <li><a href="lab.html" aria-current="page">Friction Lab</a></li>
+      <li><a href="index.html#experience">Experience</a></li>
+      <li><a href="index.html#recommendations">Recommendations</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="lab-hero">
+  <div class="wrap">
+    <span class="eyebrow">Friction Lab · interactive</span>
+    <h1 class="display">Don't read about how I work. <em>Try it.</em></h1>
+    <p class="lede">My strength is finding the friction that gets in a user's way and designing it back out. This lab lets you do the same: spot the problems in a broken screen, change the phone's conditions and watch the states hold up, then see one screen through four user roles.</p>
+    <span class="note">Concept screens built in HTML. Not client work, and not a shipped product.</span>
+  </div>
+</section>
+
+<main id="main" class="wrap">
+  <div class="tabs" role="tablist" aria-label="Lab modes">
+    <button class="tab" role="tab" id="tab-spot" aria-controls="mode-spot" aria-selected="true"><span class="n">01</span><span class="t">Spot the friction</span></button>
+    <button class="tab" role="tab" id="tab-break" aria-controls="mode-break" aria-selected="false" tabindex="-1"><span class="n">02</span><span class="t">Break the device</span></button>
+    <button class="tab" role="tab" id="tab-roles" aria-controls="mode-roles" aria-selected="false" tabindex="-1"><span class="n">03</span><span class="t">Switch the role</span></button>
+  </div>
+
+  <!-- ========== MODE 1 ========== -->
+  <section class="stage" id="mode-spot" role="tabpanel" aria-labelledby="tab-spot">
+    <div class="phone"><div class="screen" id="spot-screen"></div></div>
+    <div class="panel">
+      <span class="eyebrow">Mode 01 · heuristic evaluation</span>
+      <h2>This scanner app has five problems. Tap the phone to find them.</h2>
+      <p>A warehouse worker opens ScanFlow mid-shift. The Wi-Fi has dropped and nothing explains what's going on. Each find shows the usability heuristic it breaks, how severe it is on Nielsen's 0–4 scale, and what I'd change.</p>
+      <div class="meter"><div class="bar"><i id="spot-bar"></i></div><span class="count" id="spot-count" aria-live="polite">0 / 5 found</span></div>
+      <ol class="findings" id="findings"></ol>
+      <div class="controls">
+        <button class="btn" type="button" id="reveal-all">Show me all five</button>
+        <button class="btn primary" type="button" id="toggle-fix" aria-pressed="false">See the redesign</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MODE 2 ========== -->
+  <section class="stage" id="mode-break" role="tabpanel" aria-labelledby="tab-break" hidden>
+    <div class="phone"><div class="screen" id="break-screen" aria-live="polite"></div></div>
+    <div class="panel">
+      <span class="eyebrow">Mode 02 · system states</span>
+      <h2>Change the phone's conditions. The screen should never leave the user stuck.</h2>
+      <p>Most screens get designed for the happy path. Here, every combination of network, permission and notification setting has a planned state.</p>
+
+      <fieldset class="cond"><legend>Network</legend>
+        <div class="seg">
+          <label><input type="radio" name="net" value="online" checked><span>Online</span></label>
+          <label><input type="radio" name="net" value="offline"><span>Offline</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="cond"><legend>Nearby devices permission</legend>
+        <div class="seg">
+          <label><input type="radio" name="perm" value="ask" checked><span>Not asked yet</span></label>
+          <label><input type="radio" name="perm" value="allowed"><span>Allowed</span></label>
+          <label><input type="radio" name="perm" value="denied"><span>Denied</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="cond"><legend>Notifications</legend>
+        <div class="seg">
+          <label><input type="radio" name="notif" value="on" checked><span>On</span></label>
+          <label><input type="radio" name="notif" value="off"><span>Off</span></label>
+        </div>
+      </fieldset>
+
+      <div class="why"><div class="k">Design decision</div><p id="why-text"></p></div>
+
+      <div class="cov-label" id="cov-label">States explored: 1 of 12</div>
+      <div class="coverage" id="coverage" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- ========== MODE 3 ========== -->
+  <section class="stage" id="mode-roles" role="tabpanel" aria-labelledby="tab-roles" hidden>
+    <div class="phone"><div class="screen" id="role-screen"></div></div>
+    <div class="panel">
+      <span class="eyebrow">Mode 03 · role-based design</span>
+      <h2>Same review batch, four people. Each sees only what their role allows.</h2>
+      <p>Based on a pattern from my work as sole designer on a QA review platform at Data Science Nigeria: four roles, an admin layer for critical actions, and a status that updates itself when every task is done. This is an illustrative recreation, not the real interface.</p>
+
+      <fieldset class="cond"><legend>View as</legend>
+        <div class="seg" id="role-seg">
+          <label><input type="radio" name="role" value="contributor" checked><span>Contributor</span></label>
+          <label><input type="radio" name="role" value="reviewer"><span>Reviewer</span></label>
+          <label><input type="radio" name="role" value="super"><span>Super reviewer</span></label>
+          <label><input type="radio" name="role" value="admin"><span>Admin</span></label>
+        </div>
+      </fieldset>
+
+      <table class="matrix" id="matrix">
+        <caption class="sr-only">What each role can do</caption>
+        <thead><tr><th scope="col">Action</th><th scope="col" data-r="contributor">Contrib.</th><th scope="col" data-r="reviewer">Reviewer</th><th scope="col" data-r="super">Super</th><th scope="col" data-r="admin">Admin</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="log" id="log" aria-live="polite"><div>Try ticking the contributor's tasks, or deleting the batch as an admin.</div></div>
+    </div>
+  </section>
+
+  <section class="outro">
+    <div>
+      <span class="eyebrow">What this lab shows</span>
+      <h2 class="display">Friction found early is cheap. Friction found in production isn't.</h2>
+      <p>I bring this way of working to Android products: settings, permissions, notifications and connectivity, written up as clear user journeys and Figma prototypes developers can build from.</p>
+    </div>
+    <div class="links">
+      <a class="btn primary" href="index.html#work" style="text-decoration:none;text-align:center">See the case studies</a>
+      <a class="btn" href="mailto:oyerooluwatosin.ayo@gmail.com" style="text-decoration:none;text-align:center">Email Tosin</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>Oluwatosin Oyero — Product Designer · UX Designer</span>
+    <span class="mono">Tampere, FI · <a href="index.html">Back to portfolio →</a></span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  /* ---------- shared phone chrome ---------- */
+  var ICON = {
+    wifi: '<svg width="13" height="11" viewBox="0 0 16 12" fill="currentColor"><path d="M8 12 0 3.5a11.5 11.5 0 0 1 16 0z"/></svg>',
+    wifiOff: '<svg width="13" height="11" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 11 1 3.6a10 10 0 0 1 14 0z" opacity=".35"/><path d="M2 1l12 10"/></svg>',
+    batt: '<svg width="18" height="10" viewBox="0 0 22 12" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1" y="1" width="17" height="10" rx="2"/><rect x="3" y="3" width="11" height="6" fill="currentColor" stroke="none"/><path d="M20 4v4"/></svg>',
+    bell: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',
+    bellOff: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z" opacity=".45"/><path d="M3 3l18 18"/></svg>'
+  };
+  function chrome(inner, opts) {
+    opts = opts || {};
+    return '<div class="sb"><span>09:41</span><span class="icons"><span>' + (opts.offline ? ICON.wifiOff : ICON.wifi) + '</span><span>' + ICON.batt + '</span></span></div>' +
+      inner + '<div class="gesture"><i></i></div>';
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  /* ---------- tabs ---------- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  function selectTab(tab, focus) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (focus) tab.focus();
+    try { history.replaceState(null, '', '#' + tab.id.replace('tab-', '')); } catch (e) {}
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { selectTab(t); });
+    t.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) { e.preventDefault(); selectTab(tabs[(i + d + tabs.length) % tabs.length], true); }
+    });
+  });
+  var initial = document.getElementById('tab-' + location.hash.slice(1));
+  if (initial) selectTab(initial);
+
+  /* ========== MODE 1: spot the friction ========== */
+  var FINDINGS = [
+    { id: 'error', title: 'The error is written for developers',
+      heur: 'Help users recognise, diagnose and recover from errors', sev: 3,
+      why: '"ERR_NET_0x2: SYNC_FAIL" tells a worker nothing about what happened or what to do.',
+      fix: 'Plain language: "You\'re offline." Then say what is safe and what happens next.' },
+    { id: 'perm', title: 'Every permission at once, with no reason',
+      heur: 'Match between system and the real world', sev: 3,
+      why: 'Asking for camera, location, contacts and nearby devices up front, unexplained, invites "Deny all".',
+      fix: 'Ask for one permission, in context, right when the user tries to connect a scanner, with one sentence on why.' },
+    { id: 'list', title: 'No way to tell if the scans are saved',
+      heur: 'Visibility of system status', sev: 4,
+      why: 'Offline, the worker\'s real fear is lost work. Nothing on screen says whether these scans are safe.',
+      fix: 'A status chip on every row (Saved on device · Pending sync) and a count in the offline banner.' },
+    { id: 'retry', title: 'A dead button with no explanation',
+      heur: 'User control and freedom', sev: 2,
+      why: 'Retry is greyed out and gives no reason, so the user taps it again and again.',
+      fix: 'Keep Retry active, explain that sync also happens automatically, and keep scanning available.' },
+    { id: 'bell', title: '99+ alerts, all equally loud',
+      heur: 'Aesthetic and minimalist design', sev: 2,
+      why: 'When everything is urgent, nothing is. The one alert that needs action gets buried.',
+      fix: 'Split into "needs action" and "updates", and only interrupt the user for the first kind.' }
+  ];
+  var found = {};
+  var showFix = false;
+  var spotScreen = document.getElementById('spot-screen');
+
+  function hs(id, inner, cls) {
+    var n = FINDINGS.findIndex(function (f) { return f.id === id; }) + 1;
+    return '<button type="button" class="hs ' + (cls || '') + (found[id] ? ' found' : '') + '" data-hs="' + id + '" aria-label="Problem area: ' + esc(FINDINGS[n - 1].title) + (found[id] ? ' (found)' : '') + '"><span class="pin">' + n + '</span>' + inner + '</button>';
+  }
+
+  function renderSpot() {
+    var html;
+    if (!showFix) {
+      html = chrome(
+        '<div class="appbar"><h3>ScanFlow</h3>' + hs('bell', '<span style="display:inline-flex;align-items:center;gap:3px">' + ICON.bell + '<span class="chip err" style="font-size:10px;padding:1px 5px">99+</span></span>', 'bell-btn') + '</div>' +
+        '<div class="body">' +
+          hs('error', '<div class="bad-err">ERR_NET_0x2: SYNC_FAIL (code 503)</div>') +
+          hs('perm', '<div class="bad-perm"><b>Allow all permissions?</b><br>Camera, Location, Contacts, Nearby devices<div style="display:flex;justify-content:flex-end;gap:16px;margin-top:10px;font-weight:600"><span>DENY</span><span>ALLOW</span></div></div>') +
+          hs('list', '<div class="bad-list"><div class="p-card">Pallet 4471</div><div class="p-card">Pallet 4470</div><div class="p-card">Pallet 4469</div></div>') +
+          '<div style="flex:1"></div>' +
+          hs('retry', '<div class="p-btn grey" style="border-radius:4px">RETRY</div>') +
+        '</div>', { offline: true }) + '<div class="miss" id="miss">Looks fine here. Keep looking.</div>';
+    } else {
+      html = chrome(
+        '<div class="appbar"><h3>ScanFlow</h3><span style="display:inline-flex;align-items:center;gap:4px;color:var(--p-soft)">' + ICON.bell + '<span class="chip pend">1 needs action</span></span></div>' +
+        '<div class="body">' +
+          '<div class="banner warn"><span>⚠</span><span><b>You\'re offline.</b> 3 scans are saved on this phone and will sync when you reconnect.</span></div>' +
+          '<div class="p-card"><div class="p-row"><b>Pallet 4471</b><span class="chip pend">Pending sync</span></div><div class="p-sub">Saved on device · 09:38</div></div>' +
+          '<div class="p-card"><div class="p-row"><b>Pallet 4470</b><span class="chip pend">Pending sync</span></div><div class="p-sub">Saved on device · 09:35</div></div>' +
+          '<div class="p-card"><div class="p-row"><b>Pallet 4469</b><span class="chip ok">Synced</span></div><div class="p-sub">Uploaded · 09:31</div></div>' +
+          '<div class="p-card" style="display:flex;gap:10px;align-items:center"><div class="icon-tile">⌁</div><div style="flex:1"><b>Connect a scanner</b><div class="p-sub">We\'ll ask for nearby devices access when you tap Connect.</div></div></div>' +
+          '<div style="flex:1"></div>' +
+          '<button class="p-btn fill" type="button">Keep scanning</button>' +
+          '<button class="p-btn text" type="button">Retry sync now</button>' +
+        '</div>', { offline: true });
+    }
+    spotScreen.innerHTML = html;
+    renderFindings();
+  }
+
+  function renderFindings() {
+    var list = document.getElementById('findings');
+    var count = Object.keys(found).length;
+    list.innerHTML = FINDINGS.map(function (f, i) {
+      if (!found[f.id]) {
+        return '<li class="locked"><span class="num">0' + (i + 1) + '</span><div><h3>Not found yet</h3></div></li>';
+      }
+      return '<li><span class="num">0' + (i + 1) + '</span><div><h3>' + esc(f.title) + '</h3>' +
+        '<div class="heur">' + esc(f.heur) + ' · <span class="sev">severity ' + f.sev + '/4</span></div>' +
+        '<p>' + esc(f.why) + '</p><p class="fix"><b>Fix:</b> ' + esc(f.fix) + '</p></div></li>';
+    }).join('');
+    document.getElementById('spot-count').textContent = count + ' / 5 found' + (count === 5 ? ' · nicely done' : '');
+    document.getElementById('spot-bar').style.width = (count / 5 * 100) + '%';
+  }
+
+  var missTimer;
+  spotScreen.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-hs]');
+    if (t) {
+      found[t.getAttribute('data-hs')] = true;
+      renderSpot();
+      var again = spotScreen.querySelector('[data-hs="' + t.getAttribute('data-hs') + '"]');
+      if (again) again.focus();
+      return;
+    }
+    if (showFix) return;
+    var miss = document.getElementById('miss');
+    if (!miss) return;
+    miss.classList.add('show');
+    clearTimeout(missTimer);
+    missTimer = setTimeout(function () { miss.classList.remove('show'); }, 1200);
+  });
+  document.getElementById('reveal-all').addEventListener('click', function () {
+    FINDINGS.forEach(function (f) { found[f.id] = true; });
+    renderSpot();
+  });
+  var toggleFix = document.getElementById('toggle-fix');
+  toggleFix.addEventListener('click', function () {
+    showFix = !showFix;
+    toggleFix.setAttribute('aria-pressed', showFix);
+    toggleFix.textContent = showFix ? 'Back to the broken version' : 'See the redesign';
+    renderSpot();
+  });
+  renderSpot();
+
+  /* ========== MODE 2: break the device ========== */
+  var breakScreen = document.getElementById('break-screen');
+  var seen = {};
+  var ORDER = [];
+  ['online', 'offline'].forEach(function (n) { ['ask', 'allowed', 'denied'].forEach(function (p) { ['on', 'off'].forEach(function (o) { ORDER.push(n + '|' + p + '|' + o); }); }); });
+  var cov = document.getElementById('coverage');
+  cov.innerHTML = ORDER.map(function () { return '<i></i>'; }).join('');
+
+  function val(name) { return document.querySelector('input[name="' + name + '"]:checked').value; }
+
+  function renderBreak() {
+    var net = val('net'), perm = val('perm'), notif = val('notif');
+    var key = net + '|' + perm + '|' + notif;
+    seen[key] = true;
+    var off = net === 'offline';
+    var parts = [];
+    var why = [];
+
+    if (off) {
+      parts.push('<div class="banner warn"><span>⚠</span><span><b>You\'re offline.</b> Scans save on this phone and sync when you reconnect.</span></div>');
+      why.push('Offline isn\'t an error screen. The user keeps working, and the banner says their work is safe.');
+    }
+
+    if (perm === 'ask') {
+      parts.push('<div class="p-card" style="text-align:center;padding:20px 14px"><div class="icon-tile" style="margin:0 auto 10px">⌁</div><b style="font-size:15px">Connect your scanner</b><p class="p-sub" style="margin:6px 0 14px">ScanFlow needs access to nearby devices to find your Bluetooth scanner. Nothing else.</p><button class="p-btn fill" type="button" data-act="allow">Continue</button><button class="p-btn text" type="button" data-act="deny">Not now</button></div>');
+      why.unshift('Explain before the system prompt appears: one plain sentence on what and why, at the moment it matters. "Not now" is always there.');
+    } else if (perm === 'denied') {
+      parts.push('<div class="p-card"><div class="p-row"><b>Scanner not connected</b><span class="chip err">No access</span></div><p class="p-sub" style="margin:6px 0 12px">Without nearby devices access, ScanFlow can\'t find your scanner. You can still enter codes by hand.</p><button class="p-btn fill" type="button">Enter code manually</button><div style="height:6px"></div><button class="p-btn tonal" type="button" data-act="settings">Open settings</button></div>');
+      why.unshift('A denial isn\'t a dead end. Say what\'s lost, offer a fallback first, and make the way back to Settings one tap.');
+    } else {
+      parts.push('<div class="p-card"><div class="p-row"><b>Scanner SC-40</b><span class="chip ok">Connected</span></div><div class="p-sub">Battery 72% · ready to scan</div></div>');
+      parts.push('<div class="p-card"><div class="p-row"><b>Pallet 4471</b><span class="chip ' + (off ? 'pend">Pending sync' : 'ok">Synced') + '</span></div><div class="p-sub">' + (off ? 'Saved on device' : 'Uploaded') + ' · 09:38</div></div>');
+      parts.push('<div class="p-card"><div class="p-row"><b>Pallet 4470</b><span class="chip ' + (off ? 'pend">Pending sync' : 'ok">Synced') + '</span></div><div class="p-sub">' + (off ? 'Saved on device' : 'Uploaded') + ' · 09:35</div></div>');
+      if (!off) why.unshift('Happy path: the status chip carries the state, so the user never has to wonder whether the data went through.');
+    }
+
+    if (notif === 'off') {
+      var relevant = off || perm === 'allowed';
+      if (relevant) {
+        parts.push('<div class="banner info"><span>' + ICON.bellOff + '</span><span>Notifications are off, so you won\'t hear when sync finishes. <b style="text-decoration:underline">Turn on</b></span></div>');
+        why.push('Notifications off: only mention it where it costs the user something, here a missed sync confirmation. No nagging otherwise.');
+      } else {
+        why.push('Notifications are off, but nothing here depends on them, so the app stays quiet about it.');
+      }
+    }
+
+    var body = '<div class="appbar"><h3>ScanFlow</h3><span style="color:var(--p-soft);display:inline-flex">' + (notif === 'off' ? ICON.bellOff : ICON.bell) + '</span></div>' +
+      '<div class="body">' + parts.join('') + '<div style="flex:1"></div>' + (perm === 'allowed' ? '<button class="p-btn fill" type="button">Scan next pallet</button>' : '') + '</div>';
+    breakScreen.innerHTML = chrome(body, { offline: off });
+    document.getElementById('why-text').textContent = why.join(' ');
+
+    var n = Object.keys(seen).length;
+    document.getElementById('cov-label').textContent = 'States explored: ' + n + ' of 12' + (n === 12 ? ' · every state covered' : '');
+    Array.prototype.forEach.call(cov.children, function (cell, i) {
+      cell.className = (seen[ORDER[i]] ? 'seen' : '') + (ORDER[i] === key ? ' now' : '');
+    });
+  }
+  document.querySelectorAll('#mode-break input').forEach(function (inp) { inp.addEventListener('change', renderBreak); });
+  breakScreen.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]');
+    if (!b) return;
+    var act = b.getAttribute('data-act');
+    var target = act === 'allow' || act === 'settings' ? 'allowed' : 'denied';
+    document.querySelector('input[name="perm"][value="' + target + '"]').checked = true;
+    renderBreak();
+  });
+  renderBreak();
+
+  /* ========== MODE 3: switch the role ========== */
+  var ROLES = ['contributor', 'reviewer', 'super', 'admin'];
+  var ACTIONS = [
+    { k: 'Complete own tasks', r: ['contributor'] },
+    { k: 'Approve or return a task', r: ['reviewer', 'super'] },
+    { k: 'Override a reviewer', r: ['super'] },
+    { k: 'Upload tasks from Excel', r: ['admin'] },
+    { k: 'Create users', r: ['admin'], crit: true },
+    { k: 'Delete a batch', r: ['admin'], crit: true }
+  ];
+  var tbody = document.querySelector('#matrix tbody');
+  tbody.innerHTML = ACTIONS.map(function (a) {
+    return '<tr><td>' + a.k + (a.crit ? ' <span class="crit" title="Critical action">●</span>' : '') + '</td>' +
+      ROLES.map(function (r) { return '<td data-r="' + r + '">' + (a.r.indexOf(r) > -1 ? '<span class="yes">✓</span>' : '<span class="no">–</span>') + '</td>'; }).join('') + '</tr>';
+  }).join('');
+
+  var batch = { tasks: [true, true, false], deleted: false };
+  var roleScreen = document.getElementById('role-screen');
+  var logEl = document.getElementById('log');
+  function log(msg) {
+    var d = document.createElement('div');
+    d.textContent = msg;
+    logEl.appendChild(d);
+    while (logEl.children.length > 4) logEl.removeChild(logEl.firstChild);
+  }
+  function batchStatus() {
+    if (batch.tasks.every(Boolean)) return '<span class="chip ok">Ready for review</span>';
+    return '<span class="chip pend">In progress</span>';
+  }
+  function renderRole(dialog) {
+    var role = val('role');
+    document.querySelectorAll('#matrix [data-r]').forEach(function (c) { c.classList.toggle('on', c.getAttribute('data-r') === role); });
+
+    if (batch.deleted) {
+      roleScreen.innerHTML = chrome('<div class="appbar"><h3>Reviews</h3></div><div class="body"><div class="p-card" style="text-align:center;padding:24px 14px"><b>Batch #218 deleted</b><p class="p-sub" style="margin:6px 0 14px">The action was logged with your name and time.</p><button class="p-btn tonal" type="button" data-act="restore">Restore demo batch</button></div></div>');
+      return;
+    }
+
+    var done = batch.tasks.filter(Boolean).length;
+    var names = ['Label 40 images', 'Check transcript set B', 'Tag edge cases'];
+    var tasks = names.map(function (n, i) {
+      var canTick = role === 'contributor';
+      return '<label class="task"><input type="checkbox" data-task="' + i + '"' + (batch.tasks[i] ? ' checked' : '') + (canTick ? '' : ' disabled') + '><span class="tn">' + n + '</span>' +
+        (role !== 'contributor' && batch.tasks[i] ? '<span class="chip mute">Done</span>' : '') + '</label>';
+    }).join('');
+
+    var actions = '';
+    if (role === 'contributor') {
+      actions = '<p class="p-sub" style="margin:0">Tick your tasks. When all three are done, the batch moves to review on its own.</p>';
+    } else if (role === 'reviewer') {
+      var ready = batch.tasks.every(Boolean);
+      actions = '<button class="p-btn fill" type="button" data-act="approve"' + (ready ? '' : ' disabled') + '>Approve batch</button><button class="p-btn text" type="button" data-act="return"' + (ready ? '' : ' disabled') + '>Return with comment</button>' + (ready ? '' : '<p class="p-sub" style="margin:0;text-align:center">Available once all tasks are complete</p>');
+    } else if (role === 'super') {
+      actions = '<button class="p-btn fill" type="button" data-act="override">Override reviewer decision</button><button class="p-btn text" type="button" data-act="reassign">Reassign reviewer</button>';
+    } else {
+      actions = '<button class="p-btn tonal" type="button" data-act="upload">Upload tasks (.xlsx)</button><button class="p-btn tonal" type="button" data-act="adduser">Create user</button><button class="p-btn danger" type="button" data-act="askdelete">Delete batch…</button>';
+    }
+
+    var roleLabel = { contributor: 'Contributor', reviewer: 'Reviewer', super: 'Super reviewer', admin: 'Admin' }[role];
+    var html = '<div class="appbar"><h3>Batch #218</h3><span class="chip mute">' + roleLabel + '</span></div>' +
+      '<div class="body"><div class="p-card"><div class="p-row"><b>Speech QA · Week 42</b>' + batchStatus() + '</div><div class="p-sub">' + done + ' of 3 tasks complete</div></div>' +
+      '<div class="p-card">' + tasks + '</div><div style="flex:1"></div>' + actions + '</div>';
+
+    if (dialog) {
+      html += '<div class="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="del-h"><h4 id="del-h">Delete batch #218?</h4><p>This removes 3 tasks and their review history for everyone. Type <b>218</b> to confirm.</p><input id="del-input" inputmode="numeric" autocomplete="off" aria-label="Type 218 to confirm"><button class="p-btn danger" type="button" data-act="dodelete" disabled>Delete for everyone</button><button class="p-btn text" type="button" data-act="cancel">Cancel</button></div></div>';
+    }
+    roleScreen.innerHTML = chrome(html);
+    if (dialog) {
+      var inp = document.getElementById('del-input');
+      inp.focus();
+      inp.addEventListener('input', function () {
+        roleScreen.querySelector('[data-act="dodelete"]').disabled = inp.value.trim() !== '218';
+      });
+    }
+  }
+
+  document.querySelectorAll('#role-seg input').forEach(function (inp) { inp.addEventListener('change', function () { renderRole(); }); });
+  roleScreen.addEventListener('change', function (e) {
+    var i = e.target.getAttribute('data-task');
+    if (i === null) return;
+    var wasReady = batch.tasks.every(Boolean);
+    batch.tasks[+i] = e.target.checked;
+    var isReady = batch.tasks.every(Boolean);
+    if (!wasReady && isReady) log('All tasks done → status changed to "Ready for review" automatically. Reviewers notified.');
+    else if (wasReady && !isReady) log('A task was reopened → status back to "In progress".');
+    renderRole();
+  });
+  roleScreen.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-act]');
+    if (!b || b.disabled) return;
+    var a = b.getAttribute('data-act');
+    var msgs = {
+      approve: 'Reviewer approved batch #218.',
+      'return': 'Reviewer returned batch #218 with a comment.',
+      override: 'Super reviewer overrode a decision. Logged for audit.',
+      reassign: 'Super reviewer reassigned the batch to another reviewer.',
+      upload: 'Admin uploaded 40 tasks from one Excel file instead of adding them one by one.',
+      adduser: 'Admin created a new contributor account. Logged for audit.'
+    };
+    if (msgs[a]) { log(msgs[a]); return; }
+    if (a === 'askdelete') { renderRole(true); return; }
+    if (a === 'cancel') { log('Delete cancelled. Nothing changed.'); renderRole(); return; }
+    if (a === 'dodelete') { batch.deleted = true; log('Admin deleted batch #218 after typed confirmation. Logged.'); renderRole(); return; }
+    if (a === 'restore') { batch = { tasks: [true, true, false], deleted: false }; log('Demo batch restored.'); renderRole(); }
+  });
+  roleScreen.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && roleScreen.querySelector('.scrim')) { log('Delete cancelled. Nothing changed.'); renderRole(); }
+  });
+  renderRole();
+})();
+</script>
+</body>
+</html>

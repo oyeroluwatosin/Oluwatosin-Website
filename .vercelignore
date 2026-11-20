@@ -1,0 +1,9 @@
+CLAUDE.md
+.claude
+.env*
+.gitignore
+.vercel
+.vercel.old-deleted-project
+drafts
+preview-local
+v2

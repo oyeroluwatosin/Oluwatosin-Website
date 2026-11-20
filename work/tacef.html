@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TACEF Convention Ecosystem · Oluwatosin Oyero</title>
+<meta name="description" content="Case study: security-first UX and role-based access for the TACEF convention registration and resource-planning dashboard, by Oluwatosin Oyero.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TACEF Convention Ecosystem: a case study by Oluwatosin Oyero">
+<meta property="og:description" content="An enterprise SaaS dashboard for a convention’s registration and accommodation, handling sensitive attendee data and payments across a distributed network of admins.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,480;1,9..144,340;1,9..144,420&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site">
+  <nav class="nav">
+    <a class="nav-name" href="../index.html" style="color:inherit;text-decoration:none">Oluwatosin Oyero</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#work">Work</a></li>
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="../visual-work.html">Visual work</a></li>
+      <li><a href="../lab.html">Friction Lab</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#recommendations">Recommendations</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="page-hero d-hero">
+  <div class="wrap">
+    <div class="page-top">
+      <a class="back" href="../index.html#work">← All work</a>
+      <button class="share-btn" type="button" id="share">Copy link</button>
+    </div>
+    <div class="case-fig">FIG. 02 — LIVE PRODUCT</div>
+    <h1 class="display">TACEF: a registration system that <em>assumes nothing</em> and verifies everything.</h1>
+    <p class="lede">Registration, payment and accommodation for a large convention, designed from a 9-page PRD for attendees and for a network of zonal and fellowship admins.</p>
+    <dl class="d-meta">
+      <div><dt>Role</dt><dd>UX Designer</dd></div>
+      <div><dt>Timeframe</dt><dd>1 month</dd></div>
+      <div><dt>Tools</dt><dd>Figma, Zoom</dd></div>
+      <div><dt>Focus</dt><dd>Zero-trust UX, role-based access</dd></div>
+    </dl>
+    <a class="d-frame" href="../media/tacef/admin-overview.webp" target="_blank" rel="noopener" aria-label="Open the admin overview full size">
+      <img src="../media/tacef/admin-overview.webp" alt="Admin overview with totals, zone chart and latest registrations" width="1440" height="1172">
+    </a>
+    <p class="d-note">Sample data: names, phone numbers, emails, codes and totals are replaced. Some images are generated for illustration.</p>
+  </div>
+</section>
+
+<nav class="d-nav" aria-label="On this page">
+  <div class="wrap">
+    <a href="#challenge">Challenge</a><a href="#process">Process</a><a href="#journey">Attendee journey</a><a href="#admin">Admin side</a><a href="#safeguards">Safeguards</a><a href="#handoff">Handoff</a>
+  </div>
+</nav>
+
+<main id="main" class="wrap">
+
+  <section class="cs-block" id="challenge">
+    <span class="eyebrow">The challenge</span>
+    <p class="d-lead">Sensitive attendee data, real money and many admins. Every screen had to <strong>assume nothing and verify everything</strong>.</p>
+    <ul class="d-roles" aria-label="Who uses it">
+      <li><b>Attendees</b><span>Register alone or as a fellowship</span></li>
+      <li><b>Zonal admins</b><span>Manage their zone</span></li>
+      <li><b>Fellowship admins</b><span>Manage their fellowship</span></li>
+      <li><b>Registration team</b><span>Checks and allocates</span></li>
+    </ul>
+    <p class="d-note">Working from a 9-page PRD, I identified the need for a zero-trust UX approach.</p>
+  </section>
+
+  <section class="cs-block" id="process">
+    <span class="eyebrow">Process</span>
+    <h2>How the work went.</h2>
+    <ol class="process">
+      <li><b>Read the PRD</b><span>A 9-page document covering sensitive attendee data and payments.</span></li>
+      <li><b>Frame</b><span>Chose a zero-trust approach: every screen verifies, none assumes.</span></li>
+      <li><b>Design</b><span>Payment gate, fixed lists, role-based navigation and an audit log.</span><a href="#journey">See the screens →</a></li>
+      <li><b>Hand off</b><span>Figma components and a reusable library. Developers owned the build.</span><a href="#handoff">Handoff →</a></li>
+    </ol>
+  </section>
+
+  <section class="cs-block" id="journey">
+    <span class="eyebrow">The attendee journey</span>
+    <h2>Six screens, each answering a risk.</h2>
+    <p class="d-note">Each screen shows what it replaced or prevented (Before), what I designed (After) and why. Select a screen to open it full size.</p>
+    <article class="d-shot">
+      <a class="d-frame tall" href="../media/tacef/portal.webp" target="_blank" rel="noopener"><img src="../media/tacef/portal.webp" alt="Registration portal landing page with four services and payment information" width="1440" height="1300" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">01 · Entry</span>
+        <h3>One front door, four clear services.</h3>
+        <p class="ba before"><b>Before</b> Registration, confirmation, lodging and extra manual booking were separate tasks for attendees and for the team handling manual requests.</p>
+        <p class="ba after"><b>After</b> A single portal with four service cards and two main actions, Register and Confirm Details, with the payment rules stated on the same page.</p>
+        <p><b>Why</b> People arrive knowing what to do and how to pay before they start.</p>
+      </div>
+    </article>
+    <article class="d-shot flip">
+      <a class="d-frame tall" href="../media/tacef/form.webp" target="_blank" rel="noopener"><img src="../media/tacef/form.webp" alt="Individual registration form with five-step progress indicator and dropdown fields" width="1440" height="1500" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">02 · Register</span>
+        <h3>Five short steps, fixed lists.</h3>
+        <p class="ba before"><b>Before</b> Free typing on fields like Zone and Fellowship was a common source of errors in the data.</p>
+        <p class="ba after"><b>After</b> A five-step form (Readiness, Details, Seminar, Lodging, Review) where Zone, Subzone and Fellowship are chosen from lists.</p>
+        <p><b>Why</b> Consistent data for admins, and attendees only see one small part of the form at a time.</p>
+      </div>
+    </article>
+    <article class="d-shot">
+      <a class="d-frame tall" href="../media/tacef/accommodation-booking.webp" target="_blank" rel="noopener"><img src="../media/tacef/accommodation-booking.webp" alt="Private accommodation booking with room cards, availability and booking summary" width="1440" height="2700" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">03 · Lodging</span>
+        <h3>Show what is left before taking payment.</h3>
+        <p class="ba before"><b>Before</b> Rooms are limited and shared across many attendees, so an unavailable room could be requested and paid for.</p>
+        <p class="ba after"><b>After</b> Room cards show price, capacity and how many are left. A full room is marked Unavailable, and the summary shows nights and the total before paying.</p>
+        <p><b>Why</b> Payment only confirms accommodation that still has space.</p>
+      </div>
+    </article>
+    <article class="d-shot flip">
+      <a class="d-frame tall" href="../media/tacef/confirmed.webp" target="_blank" rel="noopener"><img src="../media/tacef/confirmed.webp" alt="Registration confirmed page with registration code, payment status and seminar schedule" width="1440" height="2236" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">04 · Confirm</span>
+        <h3>The confirmation is the proof.</h3>
+        <p class="ba before"><b>Before</b> Without a clear confirmation, attendees and admins have no shared record that a payment went through.</p>
+        <p class="ba after"><b>After</b> A confirmation with the registration code, a Payment Confirmed badge, the details provided, the seminar schedule and actions to email the ticket or download a PDF.</p>
+        <p><b>Why</b> One page the attendee can keep and an admin can check against.</p>
+      </div>
+    </article>
+    <article class="d-shot">
+      <a class="d-frame tall" href="../media/tacef/group-confirmed.webp" target="_blank" rel="noopener"><img src="../media/tacef/group-confirmed.webp" alt="Group registration confirmation with master code, payment summary and seminar selections" width="1440" height="3308" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">05 · Group</span>
+        <h3>A fellowship registers as one group.</h3>
+        <p class="ba before"><b>Before</b> Registering many members one by one is slow and hard to reconcile.</p>
+        <p class="ba after"><b>After</b> A master registration code, group information, a payment summary and the seminar choices per day, with options to print the receipt or download the summary.</p>
+        <p><b>Why</b> The lead registrant has one reference for the whole group.</p>
+      </div>
+    </article>
+    <article class="d-shot flip">
+      <a class="d-frame tall" href="../media/tacef/status.webp" target="_blank" rel="noopener"><img src="../media/tacef/status.webp" alt="Verify registration status page showing booking details and assigned room" width="1440" height="2700" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">06 · After booking</span>
+        <h3>Look up a booking without logging in.</h3>
+        <p class="ba before"><b>Before</b> Attendees would need to contact the team to learn their booking or room.</p>
+        <p class="ba after"><b>After</b> A lookup by registration code or phone number that shows the booking, payment status and assigned room, with a pass to download and a campus map.</p>
+        <p><b>Why</b> Fewer questions to the team, and no account to create.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="cs-block" id="admin">
+    <span class="eyebrow">The admin side</span>
+    <h2>What the team sees.</h2>
+    <article class="d-shot">
+      <a class="d-frame" href="../media/tacef/admin-overview.webp" target="_blank" rel="noopener"><img src="../media/tacef/admin-overview.webp" alt="Admin overview with totals, zone chart and latest registrations" width="1440" height="1172" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">07 · Admin overview</span>
+        <h3>Admins see the numbers that matter first.</h3>
+        <p class="ba before"><b>Before</b> Admins across many zones and fellowships need a quick read on registrations and payments.</p>
+        <p class="ba after"><b>After</b> Totals for participants, zones, payments received and pending, a demographic chart, registrations per zone and the latest registrations.</p>
+        <p><b>Why</b> A single view to spot what needs attention.</p>
+      </div>
+    </article>
+    <article class="d-shot flip">
+      <a class="d-frame" href="../media/tacef/hostel-admin.webp" target="_blank" rel="noopener"><img src="../media/tacef/hostel-admin.webp" alt="Hostel occupancy view with rooms, beds and allocation status" width="1440" height="1234" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">08 · Accommodation admin</span>
+        <h3>Room allocation at a glance.</h3>
+        <p class="ba before"><b>Before</b> Assigning beds by hand makes it easy to miss which rooms are full or empty.</p>
+        <p class="ba after"><b>After</b> Totals for rooms and beds, occupancy, a filterable room list with status and key holder, and an export.</p>
+        <p><b>Why</b> Allocation stays accurate and easy to check.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="cs-block" id="safeguards">
+    <span class="eyebrow">Safeguards</span>
+    <h2>Four safeguards, built into the interface.</h2>
+    <div class="cs-grid">
+      <div><span class="n">01</span><h3>Payment-gated workflows</h3><p>The allocation service stays unavailable until payment is confirmed, preventing unauthorised use of resources.</p></div>
+      <div><span class="n">02</span><h3>Standardised data entry</h3><p>Free typing is turned off on fields like Zone and Fellowship, replaced with a fixed list of options to remove a common source of errors.</p></div>
+      <div><span class="n">03</span><h3>Role-based access</h3><p>A hierarchical navigation where admins see only what they’re authorised to manage, cutting cognitive load and the risk of exposing data by accident.</p></div>
+      <div><span class="n">04</span><h3>Audit-ready dashboards</h3><p>A backstage log of every override or allocation change, so actions stay accountable at scale.</p></div>
+    </div>
+  </section>
+
+  <section class="cs-block" id="handoff">
+    <div class="cs-two">
+      <div>
+        <span class="eyebrow">Handoff</span>
+        <h2>Built to hold up year after year.</h2>
+      </div>
+      <div>
+        <p>I delivered development-ready Figma components and a reusable component library, including status badges and standardised inputs, so the platform stays consistent as it’s reused for each year’s convention. Developers owned the implementation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block">
+    <div class="callout">
+      <p>See the live registration platform.</p>
+      <span><a href="https://registration.tacef.life/" target="_blank" rel="noopener">Registration platform ↗</a></span>
+    </div>
+  </section>
+
+  <section class="cs-block">
+    <div class="callout">
+      <p>The same role-based pattern, applied to an internal tool with four user roles.</p>
+      <a href="dsn.html">See the DSN QA Review Platform →</a>
+    </div>
+  </section>
+
+  <section class="cs-block">
+    <a class="next-case" href="kryptal.html">
+      <span><span class="k">Next · FIG. 03</span><b>Kryptal</b></span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <section id="contact" style="border-bottom:none">
+    <div class="contact-panel">
+      <div>
+        <h2>Let’s build something people can trust.</h2>
+        <p>Open to product design roles near Tampere, Helsinki or Oulu, remote or hybrid.</p>
+      </div>
+      <ul class="contact-links">
+        <li><span>Email</span><a href="mailto:oyerooluwatosin.ayo@gmail.com">oyerooluwatosin.ayo@gmail.com</a></li>
+        <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/oluwatosinoyero/" target="_blank" rel="noopener">in/oluwatosinoyero</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <span>Oluwatosin Oyero — Product Designer · UX Designer</span>
+    <span class="mono">Tampere, FI · <a href="../index.html">Back to portfolio →</a></span>
+  </footer>
+</main>
+
+<script src="../share.js"></script>
+</body>
+</html>

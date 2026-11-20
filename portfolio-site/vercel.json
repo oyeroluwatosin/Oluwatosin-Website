@@ -1,0 +1,6 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/ona", "destination": "/", "permanent": true }
+  ]
+}

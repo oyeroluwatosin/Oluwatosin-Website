@@ -1,0 +1,9 @@
+.vercel
+.vercel.old-deleted-project
+.env*
+.claude
+CLAUDE.md
+drafts
+preview-local
+v2
+*.zip

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DSN QA Review Platform · Oluwatosin Oyero</title>
+<meta name="description" content="Case study: Oluwatosin Oyero was the sole designer on a QA review platform, a project in his Product Designer role at Data Science Nigeria, with four user roles, an admin layer for critical actions, Excel upload and an automatic status trigger.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DSN QA Review Platform: a case study by Oluwatosin Oyero">
+<meta property="og:description" content="Sole designer on a multi-role QA review platform: four roles, an admin layer for critical actions, and a status that updates itself.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,340;0,9..144,480;1,9..144,340;1,9..144,420&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site">
+  <nav class="nav">
+    <a class="nav-name" href="../index.html" style="color:inherit;text-decoration:none">Oluwatosin Oyero</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#work">Work</a></li>
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="../visual-work.html">Visual work</a></li>
+      <li><a href="../lab.html">Friction Lab</a></li>
+      <li><a href="../index.html#experience">Experience</a></li>
+      <li><a href="../index.html#recommendations">Recommendations</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="page-hero d-hero">
+  <div class="wrap">
+    <div class="page-top">
+      <a class="back" href="../index.html#work">← All work</a>
+      <button class="share-btn" type="button" id="share">Copy link</button>
+    </div>
+    <div class="case-fig">FIG. 01 — SOLE DESIGNER</div>
+    <h1 class="display">A QA review platform where four roles each get <em>one clear path.</em></h1>
+    <p class="lede">I designed it as the only designer at Data Science Nigeria, turning a technical spec and PRD into flows each role can follow.</p>
+    <dl class="d-meta">
+      <div><dt>Role</dt><dd>Sole Product Designer</dd></div>
+      <div><dt>Company</dt><dd>Data Science Nigeria, remote</dd></div>
+      <div><dt>Users</dt><dd>Contributor, Reviewer, Super reviewer, Admin</dd></div>
+      <div><dt>Input</dt><dd>Technical spec and PRD</dd></div>
+    </dl>
+    <a class="d-frame" href="../media/dsn/admin-overview.png" target="_blank" rel="noopener" aria-label="Open the admin overview screen full size">
+      <img src="../media/dsn/admin-overview.png" alt="Admin overview of the QA review platform: project totals, completion and a project table with status and filters" width="1440" height="1024">
+    </a>
+    <p class="d-note">Sample data: company name, logo, project names, people and figures are replaced.</p>
+  </div>
+</section>
+
+<nav class="d-nav" aria-label="On this page">
+  <div class="wrap">
+    <a href="#challenge">Challenge</a><a href="#process">Process</a><a href="#screens">Screens</a><a href="#handoff">Handoff</a><a href="#lessons">Lessons</a><a href="#next-steps">Next steps</a>
+  </div>
+</nav>
+
+<main id="main" class="wrap">
+
+  <section class="cs-block" id="challenge">
+    <span class="eyebrow">The challenge</span>
+    <p class="d-lead">Four kinds of user share the same tasks. Each needs to see and do <strong>only what their level allows</strong>, without the product feeling locked down.</p>
+    <ul class="d-roles" aria-label="The four roles">
+      <li><b>Contributor</b><span>Works on tasks</span></li>
+      <li><b>Reviewer</b><span>Reviews tasks</span></li>
+      <li><b>Super reviewer</b><span>A higher review level</span></li>
+      <li><b>Admin</b><span>Holds critical actions</span></li>
+    </ul>
+    <p class="d-note">Role names are from the real product. Exact permissions are kept general here.</p>
+  </section>
+
+  <section class="cs-block" id="process">
+    <span class="eyebrow">Process</span>
+    <h2>From spec to screens, in five steps.</h2>
+    <ol class="process">
+      <li><b>Understand</b><span>Worked through the technical spec and PRD, including the AI-model material, and broke it into plain steps a user would follow.</span></li>
+      <li><b>Align</b><span>Took part in a design sprint with the key stakeholders, run by the Product and QA lead, who let me control the session. We reviewed the old workflow and the requirements together.</span></li>
+      <li><b>Define</b><span>Mapped the four roles and what each may do. Critical actions, such as deleting and creating users, went to the admin.</span><a href="#screens">Screens 1 and 3 →</a></li>
+      <li><b>Design</b><span>Task creation and changes by role, an admin layer, a simpler Excel upload and a status that changes itself when all tasks are complete.</span><a href="#screens">Screens 2 and 4 →</a></li>
+      <li><b>Check</b><span>Held review meetings with stakeholders and the engineering team after the designs, and refined them before the build.</span></li>
+      <li><b>Hand off</b><span>Worked through the flows developers flagged as missing from the PRD, so nobody had to guess.</span><a href="#handoff">Handoff →</a></li>
+    </ol>
+  </section>
+
+  <section class="cs-block" id="screens">
+    <span class="eyebrow">What came out of it</span>
+    <h2>Four screens, four decisions.</h2>
+
+    <article class="d-shot">
+      <a class="d-frame" href="../media/dsn/admin-overview.png" target="_blank" rel="noopener"><img src="../media/dsn/admin-overview.png" alt="Admin overview with project status and filters" width="1440" height="1024" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">01 · From Define</span>
+        <h3>The admin sees every project at a glance.</h3>
+        <p class="ba before"><b>Before</b> Critical actions, such as deleting items and creating users, could sit among everyday screens.</p>
+        <p class="ba after"><b>After</b> One overview with status and filters, with the critical actions kept here for the admin.</p>
+        <p><b>Why</b> Everyday screens stay simple, and the risky actions live in one place.</p>
+      </div>
+    </article>
+
+    <article class="d-shot flip">
+      <a class="d-frame" href="../media/dsn/add-task.png" target="_blank" rel="noopener"><img src="../media/dsn/add-task.png" alt="Add New Task form with a fixed list of QA task types" width="1440" height="1075" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">02 · From Design</span>
+        <h3>Task types come from a fixed list.</h3>
+        <p class="ba before"><b>Before</b> Task names could be typed freely, so the same QA step might be named differently each time.</p>
+        <p class="ba after"><b>After</b> Choose a task type from a fixed list instead of typing it.</p>
+        <p><b>Why</b> QA steps are named the same way every time, with fewer typing errors.</p>
+      </div>
+    </article>
+
+    <article class="d-shot">
+      <a class="d-frame" href="../media/dsn/review-task.png" target="_blank" rel="noopener"><img src="../media/dsn/review-task.png" alt="Review Task table for the reviewer role" width="1440" height="1084" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">03 · From Define</span>
+        <h3>The reviewer gets a different menu and list.</h3>
+        <p class="ba before"><b>Before</b> One screen for every role would show actions a role cannot use.</p>
+        <p class="ba after"><b>After</b> Same product, but the menu and task list follow the role.</p>
+        <p><b>Why</b> People see only what they can act on.</p>
+      </div>
+    </article>
+
+    <article class="d-shot flip">
+      <a class="d-frame" href="../media/dsn/create-via-excel.png" target="_blank" rel="noopener"><img src="../media/dsn/create-via-excel.png" alt="Create via Excel upload screen with instructions and limits" width="1440" height="1024" loading="lazy"></a>
+      <div class="d-why">
+        <span class="k">04 · From Design</span>
+        <h3>Many projects in one step.</h3>
+        <p class="ba before"><b>Before</b> Large sets of work were added one item at a time.</p>
+        <p class="ba after"><b>After</b> Excel upload, with the file and user limits stated before the user hits an error.</p>
+        <p><b>Why</b> Adding work in bulk is faster than one item at a time.</p>
+      </div>
+    </article>
+    <p class="d-note">Select a screen to open it full size.</p>
+  </section>
+
+  <section class="cs-block" id="handoff">
+    <span class="eyebrow">Developer handoff</span>
+    <h2>Developers in the work from ideation to review.</h2>
+    <ol class="d-stages">
+      <li><span class="k">Ideation</span><b>Early, with engineers</b><p>I worked with the engineering team early, to understand what they meant to build before the screens were final.</p></li>
+      <li><span class="k">Implementation</span><b>Nothing left to guess</b><p>Screens and flows in Figma, with status states shown (On track, In progress, Done). When developers flagged flows missing from the PRD, we worked through them together. Developers owned the build.</p></li>
+      <li><span class="k">Review and QA</span><b>Checked against the design</b><p>Once screens were built, I held review meetings with the developers to compare them with the designs, suggest corrections and agree trade-offs where a technical limit applied, so differences in behaviour, states and wording were caught before release.</p></li>
+    </ol>
+  </section>
+
+  <section class="cs-block" id="lessons">
+    <div class="d-cols">
+      <div id="lessons-col">
+        <span class="eyebrow">Lessons learned</span>
+        <h2>What this project taught me.</h2>
+        <ul class="d-list">
+          <li><b>Check the spec before drawing.</b> Gaps in the PRD surfaced only when developers read my flows. I now check a PRD for missing user needs first, using an AI-assisted pass.</li>
+          <li><b>Design from roles, not screens.</b> Deciding what each role may do first kept one product from becoming four.</li>
+          <li><b>Keep risky actions apart.</b> Critical actions behind the admin made everyday screens simpler and safer.</li>
+        </ul>
+      </div>
+      <div id="next-steps">
+        <span class="eyebrow">What I’d improve</span>
+        <h2>Next steps, not yet done.</h2>
+        <ul class="d-list">
+          <li><b>Test with real users.</b> Walk contributors and reviewers through the task flows and watch where they hesitate, as I now do earlier on other projects after KloFood.</li>
+          <li><b>Document permissions in one place.</b> One table of what each role can see and do, as a single source for handoff and future changes.</li>
+          <li><b>Cover the rest of the states.</b> Review empty, loading and error states across every role, and check against WCAG 2.1 AA.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-block">
+    <div class="callout">
+      <p>The same thinking, taken to Android: permissions, denied and offline states. A self-initiated concept, not client work.</p>
+      <a href="../android-concept.html">See the Android concept →</a>
+    </div>
+  </section>
+
+  <section class="cs-block">
+    <a class="next-case" href="tacef.html">
+      <span><span class="k">Next · FIG. 02</span><b>TACEF Convention Ecosystem</b></span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </a>
+  </section>
+
+  <section id="contact" style="border-bottom:none">
+    <div class="contact-panel">
+      <div>
+        <h2>Need someone who can untangle roles and permissions?</h2>
+        <p>Open to product design roles near Tampere, Helsinki or Oulu, remote or hybrid.</p>
+      </div>
+      <ul class="contact-links">
+        <li><span>Email</span><a href="mailto:oyerooluwatosin.ayo@gmail.com">oyerooluwatosin.ayo@gmail.com</a></li>
+        <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/oluwatosinoyero/" target="_blank" rel="noopener">in/oluwatosinoyero</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <span>Oluwatosin Oyero — Product Designer · UX Designer</span>
+    <span class="mono">Tampere, FI · <a href="../index.html">Back to portfolio →</a></span>
+  </footer>
+</main>
+
+<script src="../share.js"></script>
+</body>
+</html>
